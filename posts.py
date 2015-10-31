@@ -12,7 +12,6 @@ class BP:
 
 	def getPage(self,pageIndex):
 		try:
-			#url = 'http://tieba.baidu.com/p/3980266757?pn=' + str(pageIndex)
 			url = 'http://tieba.baidu.com/p/4012307015?pn=' + str(pageIndex)
 			request=urllib2.Request(url)
 			response=urllib2.urlopen(request)
@@ -20,7 +19,7 @@ class BP:
 			return pageCode
 		except urllib2.URLError,e:
 			if hasattr(e,"reason"):
-				print u"连接失败，错误原因:",e.reason
+				print u"fail:",e.reason
 				return None
 
 	def getPageItems(self,pageIndex):
@@ -30,9 +29,7 @@ class BP:
 			return None
 		pattern=re.compile('post_index.*?:(.*?)}.*?<li class="d_name" data-field.*?data-field.*?target="_blank">(.*?)</a>.*?class="d_post_content j_d_post_content ">(.*?)<.*?</a></span><span class="tail-info">(.*?)</span>',re.S)
 		items = re.findall(pattern,pageCode)
-		#存储
 		pagePosts = []
-		#遍历正则表达式匹配的信息
 		for item in items:
 			#item[0]，item[1]是ID，item[2]是内容,item[3]是楼数
 			pagePosts.append([item[0].strip(),item[1].strip(),item[2].strip(),item[3].strip()])
